@@ -1,0 +1,54 @@
+# Node.js
+node_modules/
+npm-debug.log
+yarn-error.log
+yarn-debug.log*
+
+# Environment Variables
+.env
+
+# PostgreSQL Data
+*.sql
+*.sqlite
+
+# Logs
+logs/
+*.log
+
+# IDEs and Editors
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+# Mac OS
+.DS_Store
+
+# Windows
+Thumbs.db
+Desktop.ini
+
+# Operating System files
+*.swp
+*.swo
+*.swn
+
+# Build
+dist/
+build/
+
+# Sequelize Migration and Seed Files
+migrations/
+seeders/
+
+# Other Files
+*.pem
+*.key
+*.crt
+
+# Configuration files
+config/*.json
+config/*.yml
+config/*.yaml
