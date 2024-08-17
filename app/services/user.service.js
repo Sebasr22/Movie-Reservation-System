@@ -1,7 +1,7 @@
 'use strict';
 
-const UsersModel = require('../../models/Users');
-const RolesModel = require('../../models/Roles');
+const { User, Role } = require('../../models');
+const Roles = require('../../models/Roles');
 
 module.exports = {
 
@@ -18,11 +18,12 @@ module.exports = {
         try {
             if (!_username) throw new Error('El nombre de usuario es requerido');
 
-            const user = await UsersModel.findOne({ username: _username });
+            const user = await User.findOne({ where: { username: _username } });
 
             return user ? true : false;
 
         } catch (error) {
+            console.log(error);
             throw new Error(error.message);
         }
     },
@@ -39,7 +40,7 @@ module.exports = {
         try {
             if (!_email) throw new Error('El correo es requerido');
 
-            const user = await UsersModel.findOne({ email: _email });
+            const user = await User.findOne({ where: { email: _email } });
 
             return user ? true : false;
 
@@ -68,7 +69,7 @@ module.exports = {
             if (!_name) throw new Error('Error, parámetro "_name" no proporcionado');
             if (!_lastname) throw new Error('Error, parámetro "_lastname" no proporcionado');
 
-            return new UsersModel({
+            return new User({
                 username: _username,
                 password: _password,
                 email: _email,
@@ -93,8 +94,10 @@ module.exports = {
         try {
             if (!_username) throw new Error('Error, parámetro "_username" no proporcionado');
 
-            const user = await UsersModel.findOne({
-                username: _username
+            const user = await User.findOne({
+                where: {
+                    username: _username
+                }
             });
 
             return user;
@@ -112,7 +115,7 @@ module.exports = {
      */
     async getUsersService() {
         try {
-            return await UsersModel.find();
+            return await User.findAll();
         } catch (error) {
             throw error;
         }
@@ -130,7 +133,7 @@ module.exports = {
         try {
             if (!_idUser) throw new Error('Error, parámetro "_idUser" no proporcionado');
 
-            const user = await UsersModel.findById(_idUser);
+            const user = await User.findByPk(_idUser);
 
             return user ? true : false;
         } catch (error) {
@@ -150,11 +153,15 @@ module.exports = {
         try {
             if (!_idRole) throw new Error('Error, parámetro "_idRole" no proporcionado');
 
-            const role = await RolesModel.findOne(_idRole);
+            const role = await Roles.findByPk(_idRole);
 
-            return role ? true : false;
+            if (role === "admin") {
+                return true;
+            } else {
+                return false;
+            }
 
-        } catch(error) {
+        } catch (error) {
             throw error;
         }
     },
@@ -173,9 +180,14 @@ module.exports = {
             if (!_idUser) throw new Error('Error, parámetro "_idUser" no proporcionado');
             if (!_idRole) throw new Error('Error, parámetro "_idRole" no proporcionado');
 
-            const changeRole = await UsersModel.findByIdAndUpdate(_idUser, { role: _idRole });
+            const user = await User.findByPk(_idUser);
 
-            return changeRole;
+            if (user) {
+                user.id_role = _idRole;
+                await user.save();
+            }
+
+            return user;
         } catch (error) {
             throw error;
         }

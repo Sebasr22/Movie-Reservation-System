@@ -14,7 +14,7 @@ module.exports = {
             const schema = Joi.object({
                 username: Joi.string().min(6).max(30).required(),
                 password: Joi.string().min(6).max(30).required(),
-                confirmPassword: Joi.string().min(6).max(30).required(),
+                confirmPassword: Joi.string().valid(Joi.ref('password')).required(),
                 email: Joi.string().email().required(),
                 name: Joi.string().min(3).max(30).required(),
                 lastname: Joi.string().min(3).max(30).required()
@@ -32,7 +32,7 @@ module.exports = {
             //  ===========================
 
             // Verificar si el username ya existe
-            const usernameExists = await usernameExists(req.body.username);
+            const usernameExists = await checkIfUsernameExistService(req.body.username);
 
             if (usernameExists) {
                 return res.status(400).json({ message: 'El nombre de usuario ya existe' });
@@ -67,6 +67,7 @@ module.exports = {
 
             next();
         } catch (error) {
+            console.log(error);
             res.status(500).json({ message: 'Internal Server Error', error });
         }
     },
@@ -157,7 +158,7 @@ module.exports = {
             // ========== idRole =========
             // ===========================
 
-            // Verificar si el rol es valido
+            // Verificar si el rol es valido (Que sea admin para poder cambiar roles)
             const valididRole = checkIfRoleIsValidService(req.body.idRole);
 
             if (!valididRole) {

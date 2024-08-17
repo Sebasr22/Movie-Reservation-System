@@ -62,7 +62,7 @@ module.exports = {
             // Agregamos el token a la respuesta
             RESPONSE.token = token;
 
-            return res.status(200).json({ message: 'Inicio de sesión exitoso' });
+            return res.status(200).json({ message: 'Inicio de sesión exitoso', userData: RESPONSE });
         } catch (error) {
             return res.status(500).json({ message: error.message });
         }

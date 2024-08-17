@@ -51,10 +51,10 @@ Router.get('/v1/user', verifyTokenMiddleware, getUsersController);
 /**
  * 
  * @version        :1.0.0
- * @description    :Cambiar rol de usuario
+ * @description    :Cambiar rol de usuario (Solo un administrador puede cambiar el rol de un usuario)
  * @method         :PUT
  * @type           :BODY
- * @param {Number} idUser - Identificar del usuario
+ * @param {Number} idUser - Identificar del usuario al que se cambiara el rol
  * @param {Number} idRole - rol
  * @returns
  */

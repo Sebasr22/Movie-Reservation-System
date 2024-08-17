@@ -1,7 +1,9 @@
 const express = require('express');
-const db = require('./config/db'); // Asegúrate de que esta ruta sea correcta
+const db = require('./config/db');
 
+const Routes = require('./app/routers/index');
 const app = express();
+const PORT = process.env.PORT || 3000;
 
 // Middleware para parsear JSON
 app.use(express.json());
@@ -18,8 +20,7 @@ app.get('/', async (req, res) => {
   }
 });
 
-// Define tu puerto
-const PORT = process.env.PORT || 3000;
+Routes(app);
 
 // Inicia el servidor
 app.listen(PORT, () => {

@@ -30,6 +30,7 @@ module.exports = (sequelize, DataTypes) => {
         },
         id_role: {
             type: DataTypes.INTEGER,
+            defaultValue: 2,
             references: {
                 model: 'Roles',
                 key: 'id',
@@ -39,8 +40,12 @@ module.exports = (sequelize, DataTypes) => {
         },
     });
 
-    User.associate = function(models) {
-      User.hasMany(models.Reservation);
+    User.associate = function (models) {
+        User.belongsTo(models.Roles, {
+            foreignKey: 'id_role',
+            as: 'role'
+        });
+        User.hasMany(models.Reservation);
     };
 
     return User;
