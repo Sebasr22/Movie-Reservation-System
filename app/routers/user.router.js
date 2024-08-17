@@ -1,7 +1,8 @@
 'use strict';
 
-const { registerController } = require('../controllers/user.controller');
-const { registerDataValidate, loginDataValidate } = require('../validations/user.data_validate');
+const { registerController, loginController, getUsersController, changeRoleController } = require('../controllers/user.controller');
+const verifyTokenMiddleware = require('../middlewares/tokenMiddleware');
+const { registerDataValidate, loginDataValidate, changeRoleDataValidate } = require('../validations/user.data_validate');
 
 const Router = require('express').Router();
 
@@ -35,5 +36,28 @@ Router.post('/v1/user/register', registerDataValidate, registerController);
  * 
  */
 Router.post('/v1/user/login', loginDataValidate, loginController);
+
+/**
+ * 
+ * @version        :1.0.0
+ * @description    :Obtener usuarios
+ * @method         :GET
+ * @type           :BODY
+ * @returns
+ * 
+ */
+Router.get('/v1/user', verifyTokenMiddleware, getUsersController);
+
+/**
+ * 
+ * @version        :1.0.0
+ * @description    :Cambiar rol de usuario
+ * @method         :PUT
+ * @type           :BODY
+ * @param {Number} idUser - Identificar del usuario
+ * @param {Number} idRole - rol
+ * @returns
+ */
+Router.put('/v1/user/role', verifyTokenMiddleware, changeRoleDataValidate, changeRoleController);
 
 module.exports = Router;

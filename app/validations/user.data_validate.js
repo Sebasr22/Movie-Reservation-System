@@ -3,7 +3,7 @@
 const Joi = require('joi');
 const bcrypt = require('bcrypt');
 
-const { checkIfUsernameExistService, checkIfEmailExistService, getUserService } = require('../services/user.service');
+const { checkIfUsernameExistService, checkIfEmailExistService, getUserService, checkIfIdUserExistService, checkIfRoleIsValidService } = require('../services/user.service');
 
 module.exports = {
 
@@ -72,7 +72,6 @@ module.exports = {
     },
 
     loginDataValidate: async (req, res, next) => {
-
         try {
 
             const schema = Joi.object({
@@ -127,6 +126,51 @@ module.exports = {
             res.status(500).json({ message: 'Internal Server Error', error });
         }
     },
+
+    changeRoleDataValidate: async (req, res, next) => {
+        try {
+
+            const schema = Joi.object({
+                idUser: Joi.number().required(),
+                idRole: Joi.number().required()
+            });
+
+            const { error } = await schema.validate(req.body);
+
+            if (error) {
+                const errors = error.details.map((err) => ({ message: err.message, field: err.context.key }));
+                return res.status(400).json({ errors });
+            }
+
+            // ===========================
+            // ========= idUser ==========
+            // ===========================
+
+            // Verificar si el usuario existe
+            const userExists = checkIfIdUserExistService(req.body.idUser);
+
+            if (!userExists) {
+                return res.status(400).json({ message: 'El usuario no existe' });
+            }
+
+            // ===========================
+            // ========== idRole =========
+            // ===========================
+
+            // Verificar si el rol es valido
+            const valididRole = checkIfRoleIsValidService(req.body.idRole);
+
+            if (!valididRole) {
+                return res.status(400).json({ message: 'El rol no es valido' });
+            }
+
+            next();
+        } catch (error) {
+            res.status(500).json({ message: 'Internal Server Error', error });
+        }
+    },
+
+    
 
     
 }

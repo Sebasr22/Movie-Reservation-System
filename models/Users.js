@@ -28,9 +28,14 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING,
             allowNull: false,
         },
-        role: {
-            type: DataTypes.ENUM('admin', 'user'),
-            defaultValue: 'user',
+        id_role: {
+            type: DataTypes.INTEGER,
+            references: {
+                model: 'Roles',
+                key: 'id',
+            },
+            onDelete: 'CASCADE',
+            onUpdate: 'CASCADE',
         },
     });
 

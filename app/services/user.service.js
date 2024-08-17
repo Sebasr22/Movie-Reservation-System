@@ -1,6 +1,7 @@
 'use strict';
 
 const UsersModel = require('../../models/Users');
+const RolesModel = require('../../models/Roles');
 
 module.exports = {
 
@@ -102,6 +103,83 @@ module.exports = {
         }
     },
 
-    
-    
+    /**
+     * 
+     * @version        :1.0.0
+     * @description    :Servicio para obtener todos los usuarios
+     * @returns
+     * 
+     */
+    async getUsersService() {
+        try {
+            return await UsersModel.find();
+        } catch (error) {
+            throw error;
+        }
+    },
+
+    /**
+     * 
+     * @version        :1.0.0
+     * @description    :Servicio para verificar que el idUser exista
+     * @param {Number} idUser - Identificador del usuario
+     * @returns
+     * 
+     */
+    async checkIfIdUserExistService(_idUser) {
+        try {
+            if (!_idUser) throw new Error('Error, parámetro "_idUser" no proporcionado');
+
+            const user = await UsersModel.findById(_idUser);
+
+            return user ? true : false;
+        } catch (error) {
+            throw error;
+        }
+    },
+
+    /**
+     * 
+     * @version        :1.0.0
+     * @description    :Servicio para verificar que el rol sea valido
+     * @param {number} idRole - rol
+     * @returns
+     * 
+     */
+    async checkIfRoleIsValidService(_idRole) {
+        try {
+            if (!_idRole) throw new Error('Error, parámetro "_idRole" no proporcionado');
+
+            const role = await RolesModel.findOne(_idRole);
+
+            return role ? true : false;
+
+        } catch(error) {
+            throw error;
+        }
+    },
+
+    /**
+     * 
+     * @version        :1.0.0
+     * @description    :Servicio para cambiar el rol de un usuario
+     * @param {Number} idUser - Identificador del usuario
+     * @param {Number} idRole - rol
+     * @returns
+     * 
+     */
+    async changeRoleService(_idUser, _idRole) {
+        try {
+            if (!_idUser) throw new Error('Error, parámetro "_idUser" no proporcionado');
+            if (!_idRole) throw new Error('Error, parámetro "_idRole" no proporcionado');
+
+            const changeRole = await UsersModel.findByIdAndUpdate(_idUser, { role: _idRole });
+
+            return changeRole;
+        } catch (error) {
+            throw error;
+        }
+    },
+
+
 };
