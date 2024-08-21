@@ -50,11 +50,12 @@ module.exports = {
 
             // Definimos lo que vamos a responder
             const RESPONSE = {
-                idUser: USER._id,
+                idUser: USER.id,
                 username: USER.username,
                 email: USER.email,
                 name: USER.name,
                 lastname: USER.lastname,
+                role: USER.id_role,
             };
 
             const token = jwt.sign(RESPONSE, secretKey, { expiresIn: '12h' });

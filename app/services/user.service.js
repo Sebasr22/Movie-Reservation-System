@@ -1,7 +1,6 @@
 'use strict';
 
-const { User, Role } = require('../../models');
-const Roles = require('../../models/Roles');
+const { User, Roles } = require('../../models');
 
 module.exports = {
 
@@ -97,11 +96,31 @@ module.exports = {
             const user = await User.findOne({
                 where: {
                     username: _username
+                },
+                include: {
+                    model: Roles,
+                    as: 'role'
                 }
             });
 
-            return user;
+            if (!user) {
+                throw new Error('User not found');
+            }
+
+            // Formatear la respuesta
+            const formattedUser = {
+                id: user.id,
+                username: user.username,
+                name: user.name,
+                lastname: user.lastname,
+                email: user.email,
+                password: user.password,
+                id_role: user.role ? user.role.dataValues.role : null
+            };
+
+            return formattedUser;
         } catch (error) {
+            console.log(error);
             throw error;
         }
     },

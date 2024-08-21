@@ -15,7 +15,7 @@ app.get('/', async (req, res) => {
     await db.sequelize.authenticate();
     res.send('Conectado a la base de datos PostgreSQL');
   } catch (err) {
-    console.error('Error al conectar a la base de datos:', err);
+    console.error('Error al conectar a la base de datos:');
     res.status(500).send('Error en el servidor');
   }
 });

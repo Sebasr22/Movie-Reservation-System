@@ -24,9 +24,20 @@ module.exports = (sequelize, DataTypes) => {
         }
     });
 
-    Movie.associate = function(models) {
-        Movie.hasMany(models.Showtime);
+    //TODO: Esto se cambio pero no se actualizo en la BD, verificar si funciona, en caso que no regresar a la version anterior
+    Movie.associate = function (models) {
+        Movie.hasMany(models.Showtime, {
+            foreignKey: 'movieId',
+            as: 'showtimes', // Alias para acceder a los showtimes
+            onDelete: 'CASCADE',
+        });
     };
+
+    // // Version anterior:
+    // Movie.associate = function (models) {
+    //     Movie.hasMany(models.Showtime);
+    // }
+
 
     return Movie;
 };

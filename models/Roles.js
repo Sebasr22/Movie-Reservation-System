@@ -9,6 +9,8 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.ENUM('admin', 'user'),
             defaultValue: 'user',
         }
+    }, {
+        timestamps: false
     });
 
     Role.associate = function (models) {

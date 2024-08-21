@@ -26,7 +26,10 @@ module.exports = (sequelize, DataTypes) => {
     });
 
     Showtime.associate = function(models) {
-        Showtime.belongsTo(models.Movie);
+        Showtime.belongsTo(models.Movie, {
+            foreignKey: 'movieId',
+            as: 'movie',
+        });
         Showtime.hasMany(models.Reservation);
     };
 
