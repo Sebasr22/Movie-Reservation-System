@@ -14,7 +14,9 @@ module.exports = {
      */
     async getMoviesService() {
         try {
-            return await Movie.findAll();;
+            return await Movie.findAll({
+                include: 'showtimes'
+            });
         } catch (error) {
             throw error;
         }
@@ -127,6 +129,33 @@ module.exports = {
             console.log(error);
             throw error;
         }
-    }
+    },
+
+    /**
+     * 
+     * @version        :1.0.0
+     * @description    :Servicio para eliminar una película
+     * @param {String} _id - id de la película
+     * @returns
+     * 
+     */
+    async deleteMovieService(_id) {
+        try {
+            if (!_id) throw new Error('Error, parámetro "_id" no proporcionado');
+
+            const movie = await Movie.findByPk(_id);
+
+            if (!movie) throw new Error('Error, la película no existe');
+
+            // Se elimina el registro de la base de datos, 
+            // no se uso una variable de logical delete para este proyecto.
+            await movie.destroy();
+
+            return movie;
+        } catch (error) {
+            console.log(error);
+            throw error;
+        }
+    },
 
 }

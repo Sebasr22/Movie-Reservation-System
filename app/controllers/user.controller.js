@@ -58,7 +58,7 @@ module.exports = {
                 role: USER.id_role,
             };
 
-            const token = jwt.sign(RESPONSE, secretKey, { expiresIn: '12h' });
+            const token = jwt.sign(RESPONSE, secretKey, { expiresIn: '30d' });
 
             // Agregamos el token a la respuesta
             RESPONSE.token = token;

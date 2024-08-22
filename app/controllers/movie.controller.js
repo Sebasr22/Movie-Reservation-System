@@ -1,6 +1,6 @@
 'use strict';
 
-const { getMoviesService, addMovieService, patchMovieService } = require("../services/movie.service");
+const { getMoviesService, addMovieService, patchMovieService, deleteMovieService } = require("../services/movie.service");
 
 module.exports = {
 
@@ -74,10 +74,31 @@ module.exports = {
         } catch (error) {
             return res.status(500).json({ message: error.message });
         }
-    }
+    },
 
+    /**
+     * 
+     * @version        :1.0.0
+     * @description    :Eliminar pelicula
+     * @param {Object} req - solicitud
+     * @param {Object} res - respuesta
+     * @returns
+     * 
+     */
+    deleteMovieController: async (req, res) => {
+        try {
 
+            const { id } = req.params;
 
+            const movie = await deleteMovieService(id).catch((error) => {
+                throw new Error(error.message);
+            });
+
+            return res.status(200).json({ message: 'Película eliminada correctamente', movie });
+        } catch (error) {
+            return res.status(500).json({ message: error.message });
+        }
+    },
 
 
 }

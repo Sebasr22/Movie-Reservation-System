@@ -83,6 +83,17 @@ module.exports = {
                 const errors = error.details.map((err) => ({ message: err.message, field: err.context.key }));
                 return res.status(400).json({ errors });
             }
+            
+            // ===========================
+            // ========== ADMIN ==========
+            // ===========================
+
+            // Verificar si el usuario es administrador
+            const role = req.userData.role;
+
+            if (role !== 'admin') {
+                return res.status(401).json({ message: 'No tienes permisos para realizar esta acción' });
+            }
 
             // ===========================
             // ========== ID =============
@@ -97,17 +108,6 @@ module.exports = {
 
             if (!validIdMovie) {
                 return res.status(400).json({ message: 'El ID de la película no existe' });
-            }
-
-            // ===========================
-            // ========== ADMIN ==========
-            // ===========================
-
-            // Verificar si el usuario es administrador
-            const role = req.userData.role;
-
-            if (role !== 'admin') {
-                return res.status(401).json({ message: 'No tienes permisos para realizar esta acción' });
             }
 
             // ===========================
@@ -142,8 +142,39 @@ module.exports = {
         }
     },
 
+    deleteMovieDataValidate: async (req, res, next) => {
+        try {
 
+            // ===========================
+            // ========== ADMIN ==========
+            // ===========================
 
+            // Verificar si el usuario es administrador
+            const role = req.userData.role;
 
+            if (role !== 'admin') {
+                return res.status(401).json({ message: 'No tienes permisos para realizar esta acción' });
+            }
+
+            // ===========================
+            // ========== ID =============
+            // ===========================
+            const { id } = req.params;
+
+            if (!id) {
+                return res.status(400).json({ message: 'El ID es requerido' });
+            }
+
+            const validIdMovie = await checkIfIdMovieExistService(id);
+
+            if (!validIdMovie) {
+                return res.status(400).json({ message: 'El ID de la película no existe' });
+            }
+
+            next();
+        } catch (error) {
+            return res.status(500).json({ message: error.message });
+        }
+    },
 
 }

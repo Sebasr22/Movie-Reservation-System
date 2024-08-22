@@ -1,8 +1,8 @@
 'use strict';
 
-const { getMoviesController, addMovieController, patchMovieController } = require('../controllers/movie.controller');
+const { getMoviesController, addMovieController, patchMovieController, deleteMovieController } = require('../controllers/movie.controller');
 const verifyTokenMiddleware = require('../middlewares/tokenMiddleware');
-const { addMovieDataValidate, patchMovieDataValidate } = require('../validations/movie.data_validate');
+const { addMovieDataValidate, patchMovieDataValidate, deleteMovieDataValidate } = require('../validations/movie.data_validate');
 
 
 const Router = require('express').Router();
@@ -47,5 +47,17 @@ Router.post('/v1/movie', verifyTokenMiddleware, addMovieDataValidate, addMovieCo
  * 
  */
 Router.patch('/v1/movie/:id', verifyTokenMiddleware, patchMovieDataValidate, patchMovieController);
+
+/**
+ * 
+ * @version        :1.0.0
+ * @description    :Eliminar película
+ * @method         :DELETE
+ * @type           :PARAMS
+ * @param {String} id - ID de la película a eliminar
+ * @returns
+ * 
+ */
+Router.delete('/v1/movie/:id', verifyTokenMiddleware, deleteMovieDataValidate, deleteMovieController);
 
 module.exports = Router;
