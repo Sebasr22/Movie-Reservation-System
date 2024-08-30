@@ -1,4 +1,3 @@
-// models/Reservation.js
 module.exports = (sequelize, DataTypes) => {
     const Reservation = sequelize.define('Reservation', {
         id: {
@@ -33,10 +32,6 @@ module.exports = (sequelize, DataTypes) => {
             onDelete: 'CASCADE',
             onUpdate: 'CASCADE',
         },
-        reservationDate: {
-            type: DataTypes.DATE,
-            allowNull: false,
-        }
     });
 
     Reservation.associate = function(models) {

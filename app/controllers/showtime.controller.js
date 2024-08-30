@@ -16,7 +16,6 @@ module.exports = {
      */
     addShowtimeController: async (req, res) => {
         try {
-
             const { movieId, showtime, theater } = req.body;
 
             const createShowtime = await addShowtimeService(movieId, showtime, theater).catch((error) => {
@@ -25,7 +24,7 @@ module.exports = {
 
             return res.status(200).json({ message: 'Horario agregado correctamente', data: createShowtime });
         } catch (error) {
-            console.log(error);
+            // console.log(error);
             return res.status(500).json({ message: error.message });
         }
     },
@@ -41,7 +40,6 @@ module.exports = {
      */
     changeShowtimeController: async (req, res) => {
         try {
-            
             const movieId = req.params
             const { showtime, theater } = req.body;
 
@@ -73,7 +71,7 @@ module.exports = {
                 throw new Error(error.message);
             });
 
-            return res.status(200).json({ message: 'Horario eliminado correctamente'});
+            return res.status(200).json({ message: 'Horario eliminado correctamente' });
         } catch (error) {
             console.log(error);
             return res.status(500).json({ message: error.message });

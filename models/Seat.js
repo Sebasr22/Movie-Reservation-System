@@ -1,4 +1,3 @@
-// models/Seat.js
 module.exports = (sequelize, DataTypes) => {
     const Seat = sequelize.define('Seat', {
         id: {
@@ -15,18 +14,17 @@ module.exports = (sequelize, DataTypes) => {
             onDelete: 'CASCADE',
             onUpdate: 'CASCADE',
         },
-        seatNumber: {
-            type: DataTypes.STRING,
+        seats: {
+            type: DataTypes.JSONB,
             allowNull: false,
         },
-        isAvailable: {
-            type: DataTypes.BOOLEAN,
-            defaultValue: true,
-        }
     });
 
     Seat.associate = function(models) {
-        Seat.belongsTo(models.Showtime);
+        Seat.belongsTo(models.Showtime, {
+            foreignKey: 'showtimeId',
+            as: 'showtime',
+        });
     };
 
     return Seat;

@@ -1,4 +1,3 @@
-// models/User.js
 module.exports = (sequelize, DataTypes) => {
     const User = sequelize.define('User', {
         id: {
@@ -41,7 +40,7 @@ module.exports = (sequelize, DataTypes) => {
     });
 
     User.associate = function (models) {
-        User.belongsTo(models.Roles, {
+        User.belongsTo(models.Role, {
             foreignKey: 'id_role',
             as: 'role'
         });

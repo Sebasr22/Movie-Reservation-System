@@ -1,6 +1,6 @@
 'use strict';
 
-const { Movie, Showtime } = require('../../models');
+const { Movie, Showtime, Seat } = require('../../models');
 
 module.exports = {
 
@@ -87,6 +87,7 @@ module.exports = {
      * 
      */
     async addShowtimeService(_movieId, _showtime, _theater) {
+        const transaction = await sequelize.transaction(); // Iniciar una transacción
         try {
             if (!_movieId) throw new Error('Error, parámetro "_movieId" no proporcionado');
             if (!_showtime) throw new Error('Error, parámetro "_showtime" no proporcionado');
@@ -94,10 +95,46 @@ module.exports = {
 
             const theaterCaptalize = _theater.charAt(0).toUpperCase() + _theater.slice(1);
 
-            const showtime = await Showtime.create({ movieId: _movieId, showtime: _showtime, theater: theaterCaptalize });
+            // Crear el Showtime dentro de la transacción
+            const showtime = await Showtime.create(
+                { movieId: _movieId, showtime: _showtime, theater: theaterCaptalize },
+                { transaction }
+            );
+
+            // Crear los asientos en formato JSON
+            const totalRows = 10; // Ejemplo de filas en el cine (A-J)
+            const seatsPerRow = 10; // Ejemplo de asientos por fila (1-10)
+
+            let seats = {};
+
+            for (let row = 0; row < totalRows; row++) {
+                // Convertir el índice de la fila a una letra (A, B, C, etc.)
+                const rowLetter = String.fromCharCode(65 + row); // 65 es el código ASCII para 'A'
+                seats[rowLetter] = [];
+
+                for (let seat = 1; seat <= seatsPerRow; seat++) {
+                    // Asignar cada asiento en la fila correspondiente con un estado de 'available'
+                    seats[rowLetter].push({
+                        seatId: `${rowLetter}${seat}`,
+                        reserved: false
+                    });
+                }
+            }
+
+            // Guardar los asientos en la tabla Seat dentro de la transacción
+            await Seat.create(
+                { showtimeId: showtime.id, seats },
+                { transaction }
+            );
+
+            // Confirmar la transacción
+            await transaction.commit();
 
             return showtime;
         } catch (error) {
+            // Revertir la transacción en caso de error
+            await transaction.rollback();
+            console.log(error);
             throw new Error(error.message);
         }
     },

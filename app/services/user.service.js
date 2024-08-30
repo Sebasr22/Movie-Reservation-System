@@ -1,6 +1,6 @@
 'use strict';
 
-const { User, Roles } = require('../../models');
+const { User, Role } = require('../../models');
 
 module.exports = {
 
@@ -98,7 +98,7 @@ module.exports = {
                     username: _username
                 },
                 include: {
-                    model: Roles,
+                    model: Role,
                     as: 'role'
                 }
             });
@@ -172,7 +172,7 @@ module.exports = {
         try {
             if (!_idRole) throw new Error('Error, parámetro "_idRole" no proporcionado');
 
-            const role = await Roles.findByPk(_idRole);
+            const role = await Role.findByPk(_idRole);
 
             if (role === "admin") {
                 return true;

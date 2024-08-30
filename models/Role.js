@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-    const Role = sequelize.define('Roles', {
+    const Role = sequelize.define('Role', {
         id: {
             type: DataTypes.INTEGER,
             autoIncrement: true,
@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
     Role.associate = function (models) {
         Role.hasMany(models.User, {
             foreignKey: 'id_role',
-            as: 'users' 
+            as: 'users'
         });
     };
 

@@ -1,4 +1,3 @@
-// models/Showtime.js
 module.exports = (sequelize, DataTypes) => {
     const Showtime = sequelize.define('Showtime', {
         id: {

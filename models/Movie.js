@@ -1,4 +1,3 @@
-// models/Movie.js
 module.exports = (sequelize, DataTypes) => {
     const Movie = sequelize.define('Movie', {
         id: {
@@ -24,20 +23,13 @@ module.exports = (sequelize, DataTypes) => {
         }
     });
 
-    //TODO: Esto se cambio pero no se actualizo en la BD, verificar si funciona, en caso que no regresar a la version anterior
     Movie.associate = function (models) {
         Movie.hasMany(models.Showtime, {
             foreignKey: 'movieId',
-            as: 'showtimes', // Alias para acceder a los showtimes
+            as: 'showtimes',
             onDelete: 'CASCADE',
         });
     };
-
-    // // Version anterior:
-    // Movie.associate = function (models) {
-    //     Movie.hasMany(models.Showtime);
-    // }
-
 
     return Movie;
 };
