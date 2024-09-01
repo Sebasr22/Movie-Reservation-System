@@ -37,7 +37,7 @@ module.exports = {
 
             const seats = await Seat.findOne({
                 where: {
-                    showtimeId: _showtimeId.id
+                    id_showtime: _showtimeId.id
                 }
             });
             return seats ? true : false;
@@ -53,7 +53,7 @@ module.exports = {
 
             const seats = await Seat.findOne({
                 where: {
-                    showtimeId: _showtimeId.id
+                    id_showtime: _showtimeId.id
                 }
             });
 
