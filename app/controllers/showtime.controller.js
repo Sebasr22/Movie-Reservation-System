@@ -1,6 +1,6 @@
 'use strict';
 
-const { addShowtimeService, changeShowtimeService, deleteShowtimeService } = require("../services/showtime.service");
+const { addShowtimeService, editShowtimeService, deleteShowtimeService } = require("../services/showtime.service");
 
 
 module.exports = {
@@ -24,7 +24,7 @@ module.exports = {
 
             return res.status(200).json({ message: 'Horario agregado correctamente', data: createShowtime });
         } catch (error) {
-            // console.log(error);
+            console.log(error);
             return res.status(500).json({ message: error.message });
         }
     },
@@ -40,10 +40,10 @@ module.exports = {
      */
     changeShowtimeController: async (req, res) => {
         try {
-            const movieId = req.params
-            const { showtime, theater } = req.body;
+            const showtimeId = req.params
+            const { movieId, showtime, theater } = req.body;
 
-            const changeShowtime = await changeShowtimeService(movieId, showtime, theater).catch((error) => {
+            const changeShowtime = await editShowtimeService(showtimeId, movieId, showtime, theater).catch((error) => {
                 throw new Error(error.message);
             });
 

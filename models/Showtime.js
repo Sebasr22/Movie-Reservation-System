@@ -5,7 +5,7 @@ module.exports = (sequelize, DataTypes) => {
             autoIncrement: true,
             primaryKey: true,
         },
-        movieId: {
+        id_movie: {
             type: DataTypes.INTEGER,
             references: {
                 model: 'Movies',
@@ -26,7 +26,7 @@ module.exports = (sequelize, DataTypes) => {
 
     Showtime.associate = function(models) {
         Showtime.belongsTo(models.Movie, {
-            foreignKey: 'movieId',
+            foreignKey: 'id_movie',
             as: 'movie',
         });
         Showtime.hasMany(models.Reservation);

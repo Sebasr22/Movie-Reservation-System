@@ -5,7 +5,7 @@ module.exports = (sequelize, DataTypes) => {
             autoIncrement: true,
             primaryKey: true,
         },
-        showtimeId: {
+        id_showtime: {
             type: DataTypes.INTEGER,
             references: {
                 model: 'Showtimes',
@@ -22,7 +22,7 @@ module.exports = (sequelize, DataTypes) => {
 
     Seat.associate = function(models) {
         Seat.belongsTo(models.Showtime, {
-            foreignKey: 'showtimeId',
+            foreignKey: 'id_showtime',
             as: 'showtime',
         });
     };

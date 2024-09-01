@@ -60,7 +60,7 @@ module.exports = {
     changeShowtimeDataValidate: async (req, res, next) => {
         try {
             const schema = Joi.object({
-                // movieId: Joi.number().required(),
+                movieId: Joi.number().required(),
                 showtime: Joi.date().required(),
                 theater: Joi.string().required()
             });
@@ -82,6 +82,17 @@ module.exports = {
 
             if (role !== 'admin') {
                 return res.status(401).json({ message: 'No tienes permisos para realizar esta acción' });
+            }
+
+            // ==========================
+            // ======= showtimeId =======
+            // ==========================
+
+            // Verificar si el showtimeId es valido
+            const showtimeIdExists = await checkIfShowtimeIdExistService(req.params);
+
+            if (!showtimeIdExists) {
+                return res.status(400).json({ message: 'El showtime que desea editar no existe' });
             }
 
             // ==========================
@@ -108,13 +119,14 @@ module.exports = {
 
             next();
         } catch (error) {
+            console.log(error);
             return res.status(500).json({ message: 'Error en el servidor' });
         }
     },
 
     deleteShowtimeDataValidate: async (req, res, next) => {
-        try {           
-            
+        try {
+
             // ==========================
             // ========= Role ===========
             // ==========================

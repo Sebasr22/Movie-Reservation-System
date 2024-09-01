@@ -5,7 +5,7 @@ module.exports = (sequelize, DataTypes) => {
             autoIncrement: true,
             primaryKey: true,
         },
-        userId: {
+        id_user: {
             type: DataTypes.INTEGER,
             references: {
                 model: 'Users',
@@ -14,16 +14,11 @@ module.exports = (sequelize, DataTypes) => {
             onDelete: 'CASCADE',
             onUpdate: 'CASCADE',
         },
-        seatId: {
-            type: DataTypes.INTEGER,
-            references: {
-                model: 'Seats',
-                key: 'id',
-            },
-            onDelete: 'CASCADE',
-            onUpdate: 'CASCADE',
+        seats: {
+            type: DataTypes.JSON,
+            allowNull: false,
         },
-        showtimeId: {
+        id_showtime: {
             type: DataTypes.INTEGER,
             references: {
                 model: 'Showtimes',
@@ -36,8 +31,14 @@ module.exports = (sequelize, DataTypes) => {
 
     Reservation.associate = function(models) {
         Reservation.belongsTo(models.User);
-        Reservation.belongsTo(models.Seat);
-        Reservation.belongsTo(models.Showtime);
+        Reservation.belongsTo(models.User, {
+            foreignKey: 'id_user',
+            as: 'user'
+        });
+        Reservation.belongsTo(models.Showtime, {
+            foreignKey: 'id_showtime',
+            as: 'showtime',
+        });
     };
 
     return Reservation;

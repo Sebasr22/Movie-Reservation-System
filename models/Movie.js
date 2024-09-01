@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.TEXT,
             allowNull: true,
         },
-        posterImage: {
+        poster_image: {
             type: DataTypes.STRING,
             allowNull: true,
         },
@@ -25,7 +25,7 @@ module.exports = (sequelize, DataTypes) => {
 
     Movie.associate = function (models) {
         Movie.hasMany(models.Showtime, {
-            foreignKey: 'movieId',
+            foreignKey: 'id_movie',
             as: 'showtimes',
             onDelete: 'CASCADE',
         });

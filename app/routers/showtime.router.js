@@ -25,13 +25,14 @@ Router.post('/v1/showtime', verifyTokenMiddleware, addShowtimeDataValidate, addS
  * @description    :Editar horario de una película
  * @method         :PUT
  * @type           :BODY
- * @param {String} movieId - id de la película
+ * @param {String} showtimeId - id del showtime que se desea editar (params)
+ * @param {String} movieId - id de la pelicula del showtime
  * @param {String} showtime - Horario de la película
  * @param {String} theater - Teatro de la película
  * @returns
  * 
  */
-Router.put('/v1/showtime', verifyTokenMiddleware, changeShowtimeDataValidate, changeShowtimeController);
+Router.put('/v1/showtime/:id', verifyTokenMiddleware, changeShowtimeDataValidate, changeShowtimeController);
 
 /**
  * 

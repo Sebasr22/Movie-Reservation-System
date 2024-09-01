@@ -1,6 +1,6 @@
 'use strict';
 
-const { Movie, Showtime, Seat } = require('../../models');
+const { sequelize, Movie, Showtime, Seat } = require('../../models');
 
 module.exports = {
 
@@ -14,8 +14,6 @@ module.exports = {
     */
     async checkIfMovieExistService(_movieId) {
         try {
-            if (!_movieId) throw new Error('Error, parámetro "_movieId" no proporcionado');
-
             const movie = await Movie.findByPk(_movieId);
 
             return movie ? true : false;
@@ -44,7 +42,7 @@ module.exports = {
 
             const showtime = await Showtime.findOne({
                 where: {
-                    movieId: _movieId,
+                    id_movie: _movieId,
                     showtime: _showtime,
                     theater: theaterCaptalize
                 }
@@ -97,7 +95,7 @@ module.exports = {
 
             // Crear el Showtime dentro de la transacción
             const showtime = await Showtime.create(
-                { movieId: _movieId, showtime: _showtime, theater: theaterCaptalize },
+                { id_movie: _movieId, showtime: _showtime, theater: theaterCaptalize },
                 { transaction }
             );
 
@@ -123,7 +121,7 @@ module.exports = {
 
             // Guardar los asientos en la tabla Seat dentro de la transacción
             await Seat.create(
-                { showtimeId: showtime.id, seats },
+                { id_showtime: showtime.id, seats },
                 { transaction }
             );
 
@@ -149,20 +147,23 @@ module.exports = {
      * @returns
      * 
      */
-    async changeShowtimeService(_movieId, _showtime, _theater) {
+    async editShowtimeService(_showtimeId, _movieId, _showtime, _theater) { 
         try {
-            if (!_movieId) throw new Error('Error, parámetro "_movieId" no proporcionado');
             if (!_showtime) throw new Error('Error, parámetro "_showtime" no proporcionado');
-            if (!_theater) throw new Error('Error, parámetro "_theater" no proporcionado');
 
             const theaterCaptalize = _theater.charAt(0).toUpperCase() + _theater.slice(1);
 
-            const showtime = await Showtime.update({
-                showtime: _showtime,
-                theater: theaterCaptalize
-            }, { where: { movieId: _movieId } });
+            const showtimeIdToEdit = _showtimeId.id;
 
-            return showtime;
+            const showtimeToEdit = await Showtime.findByPk(showtimeIdToEdit);
+
+            if (_movieId) showtimeToEdit.id_movie = _movieId;
+            if (_showtime) showtimeToEdit.showtime = _showtime;
+            if (_theater) showtimeToEdit.theater = theaterCaptalize;
+
+            await showtimeToEdit.save();
+
+            return showtimeToEdit;
         } catch (error) {
             throw new Error(error.message);
         }
@@ -182,7 +183,7 @@ module.exports = {
 
             const idShowtime = _showtimeId.id;
 
-            const showtime = await Showtime.findOne({ where: { id: idShowtime } });
+            const showtime = await Showtime.findByPk(idShowtime);
 
             return showtime ? true : false;
         } catch (error) {
