@@ -181,7 +181,7 @@ module.exports = {
         try {
             if (!_showtimeId) throw new Error('Error, parámetro "_showtimeId" no proporcionado');
 
-            const idShowtime = _showtimeId.id;
+            const idShowtime = _showtimeId;
 
             const showtime = await Showtime.findByPk(idShowtime);
 

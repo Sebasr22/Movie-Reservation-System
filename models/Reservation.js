@@ -7,6 +7,7 @@ module.exports = (sequelize, DataTypes) => {
         },
         id_user: {
             type: DataTypes.INTEGER,
+            allowNull: false,
             references: {
                 model: 'Users',
                 key: 'id',
@@ -15,11 +16,12 @@ module.exports = (sequelize, DataTypes) => {
             onUpdate: 'CASCADE',
         },
         seats: {
-            type: DataTypes.JSON,
+            type: DataTypes.JSONB,
             allowNull: false,
         },
         id_showtime: {
             type: DataTypes.INTEGER,
+            allowNull: false,
             references: {
                 model: 'Showtimes',
                 key: 'id',
@@ -30,7 +32,6 @@ module.exports = (sequelize, DataTypes) => {
     });
 
     Reservation.associate = function(models) {
-        Reservation.belongsTo(models.User);
         Reservation.belongsTo(models.User, {
             foreignKey: 'id_user',
             as: 'user'

@@ -119,7 +119,6 @@ module.exports = {
             req.CC = req.CC || {};
             req.CC.USER = USER;
 
-
             next();
         } catch (error) {
             res.status(500).json({ message: 'Internal Server Error', error });

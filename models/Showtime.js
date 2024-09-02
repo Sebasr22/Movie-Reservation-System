@@ -7,6 +7,7 @@ module.exports = (sequelize, DataTypes) => {
         },
         id_movie: {
             type: DataTypes.INTEGER,
+            allowNull: false,
             references: {
                 model: 'Movies',
                 key: 'id',
@@ -29,7 +30,10 @@ module.exports = (sequelize, DataTypes) => {
             foreignKey: 'id_movie',
             as: 'movie',
         });
-        Showtime.hasMany(models.Reservation);
+        Showtime.hasMany(models.Reservation, {
+            foreignKey: 'id_showtime',
+            as: 'reservations'
+        });
     };
 
     return Showtime;

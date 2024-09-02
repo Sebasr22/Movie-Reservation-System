@@ -7,6 +7,7 @@ module.exports = (sequelize, DataTypes) => {
         },
         id_showtime: {
             type: DataTypes.INTEGER,
+            allowNull: false,
             references: {
                 model: 'Showtimes',
                 key: 'id',
@@ -17,6 +18,10 @@ module.exports = (sequelize, DataTypes) => {
         seats: {
             type: DataTypes.JSONB,
             allowNull: false,
+        },
+        version: {
+            type: DataTypes.INTEGER,
+            defaultValue: 0,
         },
     });
 

@@ -29,6 +29,7 @@ module.exports = (sequelize, DataTypes) => {
         },
         id_role: {
             type: DataTypes.INTEGER,
+            allowNull: false,
             defaultValue: 2,
             references: {
                 model: 'Roles',
@@ -44,7 +45,10 @@ module.exports = (sequelize, DataTypes) => {
             foreignKey: 'id_role',
             as: 'role'
         });
-        User.hasMany(models.Reservation);
+        User.hasMany(models.Reservation, {
+            foreignKey: 'id_user',
+            as: 'reservations'
+        });
     };
 
     return User;

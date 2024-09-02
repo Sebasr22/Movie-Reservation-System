@@ -1,6 +1,5 @@
 'use strict';
 
-
 const { Movie } = require('../../models');
 
 module.exports = {

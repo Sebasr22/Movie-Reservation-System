@@ -15,7 +15,7 @@ const Router = require('express').Router();
 //  * @returns
 //  * 
 //  */
-// Router.get('/v1/seat', getSetsController);
+Router.get('/v1/seat', getSetsController);
 
 /**
  * 
