@@ -56,7 +56,7 @@ module.exports = {
      * @returns
      * 
      */
-    async addMovieService(_title, _description, _poster, _genre) {
+    async addMovieService(_title, _description, _poster_image, _genre) {
         try {
             if (!_title) throw new Error('Error, parámetro "_title" no proporcionado');
             if (!_description) throw new Error('Error, parámetro "_description" no proporcionado');
@@ -65,7 +65,7 @@ module.exports = {
             const movie = await Movie.create({
                 title: _title,
                 description: _description,
-                poster: _poster,
+                poster_image: _poster_image,
                 genre: _genre
             });
 

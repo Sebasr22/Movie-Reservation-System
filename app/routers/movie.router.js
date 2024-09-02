@@ -1,5 +1,6 @@
 'use strict';
 
+const upload = require('../../config/multerConfig');
 const { getMoviesController, addMovieController, patchMovieController, deleteMovieController } = require('../controllers/movie.controller');
 const verifyTokenMiddleware = require('../middlewares/tokenMiddleware');
 const { addMovieDataValidate, patchMovieDataValidate, deleteMovieDataValidate } = require('../validations/movie.data_validate');
@@ -31,7 +32,7 @@ Router.get('/v1/movie', getMoviesController);
  * @returns
  * 
  */
-Router.post('/v1/movie', verifyTokenMiddleware, addMovieDataValidate, addMovieController);
+Router.post('/v1/movie', verifyTokenMiddleware, upload.single('poster'), addMovieDataValidate, addMovieController);
 
 /**
  * 

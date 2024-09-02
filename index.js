@@ -7,6 +7,7 @@ const PORT = process.env.PORT || 3000;
 
 // Middleware para parsear JSON
 app.use(express.json());
+app.use('/images', express.static('public/images'));
 
 // Ruta de prueba para verificar la conexión
 app.get('/', async (req, res) => {
